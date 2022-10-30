@@ -2,7 +2,7 @@ from config import dp, bot, ADMINS
 from aiogram import types, Dispatcher
 import random
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-import datetime
+from parser.parser_wheel import parser
 from database.bot_db import sql_command_random, sql_command_all
 from keyboards.clien_kb import direction_markup
 
@@ -99,6 +99,20 @@ async def get_random_user(message: types.Message):
     await sql_command_random(message)
 
 
+async def parsser_wheels(message: types.Message):
+    items = parser()
+    for item in items:
+        await bot.send_message(
+            message.from_user.id,
+
+            f"{item['link']}"
+            f"{item['logo']}\n"
+            f"# {item['size']}\n"
+            f"цена - {item['price']}\n"
+            )
+
+
+
 async def get_all_mentor(message: types.Message):
     await sql_command_all()
 
@@ -113,3 +127,4 @@ def register_client_handler(dp: Dispatcher):
     dp.register_message_handler(dice_game, commands=["dice"])
     dp.register_message_handler(get_random_user, commands=["getmentor"])
     dp.register_message_handler(get_all_mentor, commands=["allmentor"])
+    dp.register_message_handler(parsser_wheels, commands=["wheel"])
