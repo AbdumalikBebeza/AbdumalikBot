@@ -1,6 +1,6 @@
 import asyncio
 
-from handlers import callback, client, extra, FSM_admin_mentors, admin, notification
+from handlers import callback, client, extra, FSM_admin_mentors, admin, notification, inline
 from aiogram.utils import executor
 from database.bot_db import sql_create
 from config import bot, dp
@@ -11,7 +11,7 @@ async def on_startup(_):
     asyncio.create_task(notification.scheduler())
     sql_create()
 
-
+inline.register_handler_inline(dp)
 admin.register_message_admin(dp)
 client.register_client_handler(dp)
 callback.register_handler_callback(dp)
